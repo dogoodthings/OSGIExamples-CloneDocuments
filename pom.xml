@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>org.dogoodthings.ectr</groupId>
+  <artifactId>OSGi-Examples-Clone</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <packaging>bundle</packaging>
+
+  <name>OSGi-Examples-Clone</name>
+  <description>A simple OSGi-Examples-Clone.</description>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.compiler.source>17</maven.compiler.source>
+    <maven.compiler.target>17</maven.compiler.target>
+    <ectr.installation.directory>C:\Program Files (x86)\SAP\ECTRS4</ectr.installation.directory>
+    <bundle.activator>org.dogoodthings.ectr.clone.Activator</bundle.activator>
+    <bundle.import-packages></bundle.import-packages>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.osgi</groupId>
+      <artifactId>org.osgi.core</artifactId>
+      <version>6.0.0</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>com.dscsag</groupId>
+      <artifactId>plm-api</artifactId>
+      <version>5.2.10.0</version>
+      <scope>system</scope>
+      <systemPath>${ectr.installation.directory}/basis/classes/plm-api.jar</systemPath>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.felix</groupId>
+        <artifactId>maven-bundle-plugin</artifactId>
+        <version>3.0.1</version>
+        <extensions>true</extensions>
+        <executions>
+          <execution>
+            <id>bundle-manifest</id>
+            <phase>process-resources</phase>
+            <goals>
+              <goal>manifest</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>create-bundle</id>
+            <phase>package</phase>
+            <goals>
+              <goal>bundle</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <instructions>
+            <_noee>true</_noee>
+            <_consumer-policy>$${range;[===,+)}</_consumer-policy>
+            <Bundle-Activator>${bundle.activator}</Bundle-Activator>
+            <Bundle-SymbolicName>${project.groupId}.${project.artifactId};singleton:=true</Bundle-SymbolicName>
+            <Import-Package>${bundle.import-packages}*</Import-Package>
+            <Export-Package></Export-Package>
+          </instructions>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+  <reporting>
+    <plugins>
+      <plugin>
+        <artifactId>maven-project-info-reports-plugin</artifactId>
+      </plugin>
+    </plugins>
+  </reporting>
+</project>
